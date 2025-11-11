@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -15,6 +16,10 @@ public class StudentService {
 
     public void add(Student student) {
         studentRepository.save(student);
+    }
+
+    public List<Student> findAllStudents() {
+        return studentRepository.findAll();
     }
 
     public List<Student> findAllStudents(Pageable pageable) {
@@ -32,6 +37,10 @@ public class StudentService {
 
     public void delete(long id) {
         studentRepository.deleteById(id);
+    }
+
+    public void deleteAll(Set<Student> students) {
+        studentRepository.deleteAll(students);
     }
 
     public void update(Student student) {
