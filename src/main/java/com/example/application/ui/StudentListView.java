@@ -6,22 +6,17 @@ import com.example.application.service.StudentService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.grid.dataview.GridLazyDataView;
-import com.vaadin.flow.component.grid.dataview.GridListDataView;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-import java.util.Comparator;
 import java.util.Set;
 
-import static com.vaadin.flow.spring.data.VaadinSpringDataHelpers.toSpringPageRequest;
-
-@Route("elevlista")
-@PageTitle("Elever")
-@Menu(title = "Elevlista")
+    @Route("elevlista")
+    @PageTitle("Elever")
+    @Menu(title = "Elevlista")
 public class StudentListView extends Div {
     private final StudentService studentService;
 
@@ -49,6 +44,7 @@ public class StudentListView extends Div {
 
         studentGrid = new Grid<>(Student.class, false);
         studentGrid.setItems(studentService.findAllStudents());
+        studentGrid.setSelectionMode(Grid.SelectionMode.MULTI);
         studentGrid.addColumn(Student::getName)
                 .setHeader("Namn").setSortable(true);
         studentGrid.addColumn(Student::getPersonalIdNumber)
@@ -58,6 +54,7 @@ public class StudentListView extends Div {
 
         deleteButton = new Button("Ta bort", event -> deleteStudent());
         deleteButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+
 
         add(new ViewToolbar("Elevlista"), ViewToolbar.group(name, personalIdNumber, classId, addButton));
         add(studentGrid, deleteButton);
@@ -72,6 +69,7 @@ public class StudentListView extends Div {
                 .classId(classId.getValue())
                 .build();
         studentService.add(student);
+        //TODO uppdaterar inte fören reload av sida
         studentGrid.getDataProvider().refreshAll();
         name.clear();
         personalIdNumber.clear();
@@ -81,6 +79,7 @@ public class StudentListView extends Div {
     private void deleteStudent() {
         Set<Student> students = studentGrid.getSelectedItems();
         studentService.deleteAll(students);
+        //TODO uppdaterar inte fören reload av sida
         studentGrid.getDataProvider().refreshAll();
     }
 }

@@ -6,35 +6,32 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Objects;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "students")
+@Table(name = "lessons")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Student {
+public class Lesson {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String name;
-
-    @Column(unique = true, nullable = true)
-    private String personalIdNumber;
+    private Long teacherId;
 
     @Column(nullable = false)
     private String classId;
 
+    @Column(nullable = false)
+    private String subject;
 
-    @Override
-    public boolean equals(Object o) {
-        if (o instanceof Student student) {
-            return Objects.equals(id, student.getId());
-        }
-        return false;
-    }
+    @Column(nullable = false)
+    private Integer duration;
+
+    @Column(nullable = false)
+    private LocalDateTime startTime;
 }
