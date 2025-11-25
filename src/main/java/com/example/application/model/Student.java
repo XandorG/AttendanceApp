@@ -23,7 +23,7 @@ public class Student {
     @Column(nullable = false)
     private String name;
 
-    @Column(unique = true, nullable = true)
+    @Column(nullable = true)
     private String personalIdNumber;
 
     @Column(nullable = false)
