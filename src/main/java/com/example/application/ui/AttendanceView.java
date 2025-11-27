@@ -35,8 +35,9 @@ public class AttendanceView extends Div {
     Grid<Lesson> lessonGrid;
     Grid<Attendance> attendanceGrid;
     Editor<Attendance> attendanceEditor;
-    Grid.Column<Attendance> absenseColumn;
-    Grid.Column<Attendance> editColumn;
+    IntegerField absenceField;
+
+
     Button nextButton;
 
     public AttendanceView(AttendanceService attendanceService, StudentService studentService, LessonService lessonService) {
@@ -44,6 +45,17 @@ public class AttendanceView extends Div {
         this.studentService = studentService;
         this.lessonService = lessonService;
 
+        setUpLessonGrid();
+
+        setUpAttendanceGrid();
+
+        add(new ViewToolbar("Närvarohantering"));
+        text = new Text("Välj lektion");
+        add(text);
+        add(lessonGrid, nextButton);
+    }
+
+    private void setUpLessonGrid() {
         lessonGrid = new Grid<>(Lesson.class, false);
         lessonGrid.setItems(lessonService.findAll());
         lessonGrid.addColumn(Lesson::getSubject)
@@ -57,7 +69,9 @@ public class AttendanceView extends Div {
 
         nextButton = new Button("Nästa", event -> switchToStudentGrid());
         nextButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+    }
 
+    private void setUpAttendanceGrid() {
         attendanceGrid = new Grid<>(Attendance.class, false);
         attendanceEditor = attendanceGrid.getEditor();
 //        attendanceGrid.setSelectionMode(Grid.SelectionMode.MULTI);
@@ -75,9 +89,9 @@ public class AttendanceView extends Div {
                     return checkbox;
                 }
         )).setHeader("Närvarande");
-        absenseColumn = attendanceGrid.addColumn(Attendance::getMinutesAbsent)
+        Grid.Column<Attendance> absenseColumn = attendanceGrid.addColumn(Attendance::getMinutesAbsent)
                 .setHeader("Ogiltig Frånvaro (min)").setSortable(false);
-        editColumn = attendanceGrid.addComponentColumn(attendance -> {
+        Grid.Column<Attendance> editColumn = attendanceGrid.addComponentColumn(attendance -> {
             Button editButton = new Button("Ändra");
             editButton.addClickListener(event -> {
                 if (attendanceEditor.isOpen()) {
@@ -92,12 +106,16 @@ public class AttendanceView extends Div {
         attendanceEditor.setBinder(binder);
         attendanceEditor.setBuffered(true);
 
-        IntegerField absenceField = new IntegerField();
+        absenceField = new IntegerField();
         absenceField.setMin(0);
         //TODO change max to lesson length
-        absenceField.setMax(60);
+//        absenceField.setMax(attendanceEditor.getItem().getLesson().getDuration());
+//        absenceField.setMax(60);
         binder.forField(absenceField)
-                .withValidator(new IntegerRangeValidator("Ogilitg tid, minimum 0, max " + 60, absenceField.getMin(), absenceField.getMax()))
+                .withValidator(new IntegerRangeValidator(
+                        "Ogilitg tid, minimum " + absenceField.getMin() + ", max " + absenceField.getMax(),
+                        absenceField.getMin(),
+                        absenceField.getMax()))
                 .bind(Attendance::getMinutesAbsent, Attendance::setMinutesAbsent);
         absenseColumn.setEditorComponent(absenceField);
 
@@ -112,11 +130,6 @@ public class AttendanceView extends Div {
 
         HorizontalLayout actions = new HorizontalLayout(saveButton, cancelButton);
         editColumn.setEditorComponent(actions);
-
-        add(new ViewToolbar("Närvarohantering"));
-        text = new Text("Välj lektion");
-        add(text);
-        add(lessonGrid, nextButton);
     }
 
     private void switchToStudentGrid() {
@@ -124,8 +137,9 @@ public class AttendanceView extends Div {
         remove(lessonGrid, nextButton);
 
         attendanceGrid.setItems(attendanceService.getAttendanceByLesson(lesson));
+        absenceField.setMax(lesson.getDuration());
 
-        text.setText(lesson.getSubject() + ": " + lesson.getClassId() + " Lektionstid: " + lesson.getDuration());
+        text.setText(lesson.getSubject() + ": " + lesson.getClassId() + " - Lektionstid: " + lesson.getDuration() + " min");
         add(attendanceGrid);
     }
 }

@@ -1,11 +1,13 @@
 package com.example.application.service;
 
+import com.example.application.dto.StudentDTO;
 import com.example.application.model.Student;
 import com.example.application.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -16,6 +18,20 @@ public class StudentService {
 
     public void add(Student student) {
         studentRepository.save(student);
+    }
+
+    public void add(List<StudentDTO> studentDTOList) {
+        List<Student> studentList = new ArrayList<>();
+        for (StudentDTO studentDTO : studentDTOList) {
+            Student student = Student.builder()
+                    .name(studentDTO.getName())
+                    .classId(studentDTO.getClassId())
+                    .personalIdNumber(studentDTO.getPersonalIdNumber())
+                    .build();
+            studentList.add(student);
+        }
+
+        studentRepository.saveAll(studentList);
     }
 
     public List<Student> findAllStudents() {
