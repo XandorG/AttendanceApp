@@ -80,8 +80,7 @@ public class LessonHandlerView extends Div {
 
     private void addLesson() {
         lessonService.add(teacherId, classId.getValue(), subject.getValue(), duration.getValue().intValue(), startDate.getValue());
-        //TODO uppdaterar inte när knappen trycks
-        lessonGrid.getDataProvider().refreshAll();
+        lessonGrid.setItems(lessonService.findAll());
         subject.clear();
         classId.clear();
         duration.clear();

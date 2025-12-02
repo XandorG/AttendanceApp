@@ -29,7 +29,6 @@ public class Student {
     @Column(nullable = false)
     private String classId;
 
-
     @Override
     public boolean equals(Object o) {
         if (o instanceof Student student) {

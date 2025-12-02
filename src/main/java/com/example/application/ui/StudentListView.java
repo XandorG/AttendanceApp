@@ -49,6 +49,7 @@ public class StudentListView extends Div {
         addButton = new Button("Lägg till", event -> addStudent());
         addButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
+        //TODO put behind Tabs ??
         Upload upload = getUpload();
 
         studentGrid = new Grid<>(Student.class, false);
@@ -80,6 +81,7 @@ public class StudentListView extends Div {
                         ObjectMapper mapper = new ObjectMapper();
                         List<StudentDTO> studentDTOList = mapper.readValue(uploadedFile, new TypeReference<List<StudentDTO>>() {});
                         studentService.add(studentDTOList);
+                        studentGrid.setItems(studentService.findAllStudents());
                     }
                 }
         );
@@ -96,8 +98,8 @@ public class StudentListView extends Div {
                 .classId(classId.getValue())
                 .build();
         studentService.add(student);
-        //TODO uppdaterar inte fören reload av sida
-        studentGrid.getDataProvider().refreshAll();
+        studentGrid.setItems(studentService.findAllStudents());
+//        studentGrid.getDataProvider().refreshAll();
         name.clear();
         personalIdNumber.clear();
         classId.clear();
@@ -106,7 +108,7 @@ public class StudentListView extends Div {
     private void deleteStudent() {
         Set<Student> students = studentGrid.getSelectedItems();
         studentService.deleteAll(students);
-        //TODO uppdaterar inte fören reload av sida
-        studentGrid.getDataProvider().refreshAll();
+//        studentGrid.getDataProvider().refreshAll();
+        studentGrid.setItems(studentService.findAllStudents());
     }
 }
