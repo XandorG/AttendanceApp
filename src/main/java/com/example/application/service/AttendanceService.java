@@ -1,5 +1,6 @@
 package com.example.application.service;
 
+import com.example.application.dto.StatisticsDAO;
 import com.example.application.model.Attendance;
 import com.example.application.model.Lesson;
 import com.example.application.model.Student;
@@ -10,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +32,10 @@ public class AttendanceService {
     public List<Attendance> getAttendanceByStudent(Student student) {
         return attendanceRepository.findByStudentId(student.getId());
     }
+    
+    public List<Attendance> getAttendanceByStudents(List<Student> students) {
+        return attendanceRepository.findByStudentIdIn(students.stream().map(Student::getId).collect(Collectors.toList()));
+    }
 
     public List<Attendance> getAttendanceByLesson(Lesson lesson) {
         return attendanceRepository.findByLessonId(lesson.getId());
@@ -38,5 +44,23 @@ public class AttendanceService {
     public void updateAttendance(Attendance attendance) {
         attendanceRepository.save(attendance);
         logger.info("Attendance updated: {}", attendance.isPresent());
+    }
+    
+    public StatisticsDAO getStatisticsByStudents(List<Student> students) {
+        List<Attendance> attendances = getAttendanceByStudents(students);
+        
+        StatisticsDAO statisticsDAO = new StatisticsDAO();
+        for (Attendance attendance : attendances) {
+            statisticsDAO.addLessonTime(attendance.getLesson().getDuration());
+            if (attendance.isPresent()) {
+                statisticsDAO.addAbsentTime(attendance.getMinutesAbsent());
+            } else {
+                statisticsDAO.addAbsentTime(attendance.getLesson().getDuration());
+            }
+        }
+
+        statisticsDAO.setPercentage(((double) statisticsDAO.getAbsentTimeSum() / statisticsDAO.getLessonTimeSum()) * 100);
+        
+        return statisticsDAO;
     }
 }
