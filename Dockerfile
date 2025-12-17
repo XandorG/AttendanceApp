@@ -1,6 +1,6 @@
 FROM ghcr.io/jqlang/jq:latest AS jq-stage
 
-FROM eclipse-temurin:21-jdk AS build
+FROM maven:3.9.9-amazoncorretto-21-debian AS build
 COPY --from=jq-stage /jq /usr/bin/jq
 # Test that jq works after copying
 RUN jq --version
