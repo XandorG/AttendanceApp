@@ -90,16 +90,8 @@ public class StudentListView extends Div {
     }
 
     private void addStudent() {
-        //TODO move creation of student to service
-        //TODO add check for valid id number (not necessary)
-        Student student = Student.builder()
-                .name(name.getValue())
-                .personalIdNumber(personalIdNumber.getValue())
-                .classId(classId.getValue())
-                .build();
-        studentService.add(student);
+        studentService.add(name.getValue(), personalIdNumber.getValue(), classId.getValue());
         studentGrid.setItems(studentService.findAllStudents());
-//        studentGrid.getDataProvider().refreshAll();
         name.clear();
         personalIdNumber.clear();
         classId.clear();
@@ -108,7 +100,6 @@ public class StudentListView extends Div {
     private void deleteStudent() {
         Set<Student> students = studentGrid.getSelectedItems();
         studentService.deleteAll(students);
-//        studentGrid.getDataProvider().refreshAll();
         studentGrid.setItems(studentService.findAllStudents());
     }
 }

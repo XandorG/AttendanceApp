@@ -16,7 +16,12 @@ import java.util.Set;
 public class StudentService {
     private final StudentRepository studentRepository;
 
-    public void add(Student student) {
+    public void add(String name, String personalIdNumber, String classId) {
+        Student student = Student.builder()
+                .name(name)
+                .personalIdNumber(personalIdNumber)
+                .classId(classId)
+                .build();
         studentRepository.save(student);
     }
 
