@@ -17,13 +17,7 @@ src
 │       │   └── ui
 │       │       ├── component
 │       │       │   └── ViewToolbar.java
-│       │       └── MainLayout.java
-│       ├── examplefeature
-│       │   ├── ui
-│       │   │   └── TaskListView.java
-│       │   ├── Task.java
-│       │   ├── TaskRepository.java
-│       │   └── TaskService.java     
+│       │       └── MainLayout.java  
 │       ├── dto    
 │       │   ├── StatisticsDAO.java
 │       │   └── StudentDAO.java   
@@ -47,9 +41,7 @@ src
 │       │   └── StudentListView
 │       └── Application.java       
 └── test/java
-    └── [application package]
-        └── examplefeature
-           └── TaskServiceTest.java                 
+    └── [application package]             
 ```
 
 The main entry point into the application is `Application.java`. This class contains the `main()` method that start up 
