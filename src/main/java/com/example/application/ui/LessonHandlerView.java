@@ -26,6 +26,7 @@ public class LessonHandlerView extends Div {
     private final LessonService lessonService;
 
     //TODO temporary teacherId
+    //This is for filtering by teacher
     private final Long teacherId = 1L;
 
     private final TextField subject;
