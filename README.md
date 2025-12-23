@@ -69,24 +69,37 @@ the `Application` class, using the `@Theme` annotation.
 ## Starting in Development Mode
 
 To start the application in development mode, import it into your IDE and run the `Application` class. 
-You can also start the application from the command line by running: 
 
-```bash
-./mvnw
-```
+[//]: # (You can also start the application from the command line by running: )
+
+[//]: # ()
+[//]: # (```bash)
+
+[//]: # (./mvnw)
+
+[//]: # (```)
 
 ## Building for Production
 
-To build the application in production mode, run:
+[//]: # (To build the application in production mode, run:)
 
-```bash
-./mvnw -Pproduction package
-```
+[//]: # ()
+[//]: # (```bash)
+
+[//]: # (./mvnw -Pproduction package)
+
+[//]: # (```)
 
 To build a Docker image, run:
 
 ```bash
 docker build -t attendanceapp:latest .
+```
+
+To start Docker container, run:
+
+```bash
+docker run -p 8080:8080 attendanceapp:latest
 ```
 
 (Irrelevant at the moment) If you use commercial components, pass the license key as a build secret:
