@@ -49,7 +49,7 @@ public class StudentListView extends Div {
         addButton = new Button("Lägg till", event -> addStudent());
         addButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        //TODO put behind Tabs ??
+        //TODO put behind Tabs to make more sense
         Upload upload = getUpload();
 
         studentGrid = new Grid<>(Student.class, false);

@@ -32,7 +32,6 @@ public class LessonService {
                 .build();
         lessonRepository.save(lesson);
 
-        //TODO needs to be linked to the list of attendances in lesson
         List<Student> students = studentService.findByClassID(classId);
         for (Student student : students) {
             attendanceService.addAttendance(student, lesson, 0);

@@ -1,12 +1,11 @@
 package com.example.application.ui;
 
 import com.example.application.base.ui.component.ViewToolbar;
-import com.example.application.dto.StatisticsDAO;
+import com.example.application.dto.StatisticsDTO;
 import com.example.application.model.Student;
 import com.example.application.service.AttendanceService;
 import com.example.application.service.StudentService;
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
@@ -58,7 +57,7 @@ public class StatisticsView extends Div {
             return;
         }
 
-        StatisticsDAO statistics = attendanceService.getStatisticsByStudents(List.of(student));
+        StatisticsDTO statistics = attendanceService.getStatisticsByStudents(List.of(student));
 
         textArea.setValue(String.format("Procent frånvaro: %.1f%%", statistics.getPercentage()));
     }

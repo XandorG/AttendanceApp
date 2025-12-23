@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class StatisticsDAO {
+public class StatisticsDTO {
     int absentTimeSum;
     int lessonTimeSum;
     double percentage;
